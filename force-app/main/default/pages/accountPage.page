@@ -1,0 +1,24 @@
+<apex:page showHeader="false" 
+           sidebar="false" controller="AccountPageController">
+    <apex:form>
+      <apex:pageBlock >
+        <apex:actionFunction action="{!getAccount}" name="selectAccount"
+                       reRender="AccountName" />
+  
+      <div class="slds-scope">
+        <apex:variable var="uiTheme" value="classic2010Theme"
+                      rendered="{!$User.UIThemeDisplayed == 'Theme3'}">
+          <button>Back</button>
+        </apex:variable>
+      </div>
+
+      <apex:selectList size="1" value="{!accountId}" onchange="selectAccount()">
+        <apex:selectOptions value="{!accountSelectOptionList}"/>
+      </apex:selectList>
+
+      <apex:pageBlockSection title="Account" id="AccountName">
+        <h1>{! account.Name }</h1>
+      </apex:pageBlockSection>
+    </apex:pageBlock>
+  </apex:form>
+</apex:page>
