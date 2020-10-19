@@ -1,7 +1,7 @@
 <apex:page showHeader="false" 
            sidebar="false" controller="AccountPageController">
-    <apex:form>
-      <apex:pageBlock >
+  <apex:form>
+    <apex:pageBlock >
         <apex:actionFunction action="{!getAccount}" name="selectAccount"
                        reRender="AccountName" />
   
@@ -17,7 +17,22 @@
       </apex:selectList>
 
       <apex:pageBlockSection title="Account" id="AccountName">
-        <h1>{! account.Name }</h1>
+        <apex:outputField value="{! account.Name }"/>
+        <apex:outputField value="{! account.AccountNumber }"/>
+        <apex:outputField value="{! account.Type }"/>
+        <apex:outputField value="{! account.SLAExpirationDate__c }"/>
+        <apex:outputField value="{! account.Phone }"/>
+        <apex:outputField value="{! account.Industry }"/>
+        <apex:outputField value="{! account.AnnualRevenue }"/>
+        <apex:outputField value="{! account.Rating }"/>
+        <apex:outputField value="{! account.Fax }"/>
+        <apex:outputField value="{! account.NumberOfEmployees }"/>
+
+        <apex:pageBlockTable value="{!account.contacts}" var="contact">
+          <apex:column value="{!contact.Name}"/>
+          <apex:column value="{!contact.Title}"/>
+          <apex:column value="{!contact.Phone}"/>
+        </apex:pageBlockTable>
       </apex:pageBlockSection>
     </apex:pageBlock>
   </apex:form>

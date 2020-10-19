@@ -19,6 +19,10 @@ public with sharing class AccountPageController {
     }
 
     public void getAccount(){
-        account = [SELECT Id, Name FROM Account WHERE Id =: accountId LIMIT 1];  
+        account = [SELECT Id, Name, AccountNumber, 	Type,
+                          SLAExpirationDate__c, Phone, Industry, AnnualRevenue,
+                          Rating, Fax, NumberOfEmployees,
+                          (SELECT Id, Name, Title, Phone, AccountId FROM Contacts) 
+                          FROM Account WHERE Id =: accountId LIMIT 1];  
     }
 }
