@@ -1,22 +1,43 @@
 <apex:page showHeader="false" 
            sidebar="false" controller="AccountPageController">
+  <apex:slds />
+
   <apex:form>
     <apex:pageBlock >
-        <apex:actionFunction action="{!getAccount}" name="selectAccount"
+      <apex:actionFunction action="{!getAccount}" name="selectAccount"
                        reRender="AccountName" />
-  
-      <div class="slds-scope">
-        <apex:variable var="uiTheme" value="classic2010Theme"
-                      rendered="{!$User.UIThemeDisplayed == 'Theme3'}">
-          <button>Back</button>
-        </apex:variable>
-      </div>
+
+      <apex:pageBlockButtons>
+          <apex:variable var="uiTheme" value="classic2010Theme"
+                        rendered="{!$User.UIThemeDisplayed == 'Theme3'}">
+            <button>Back</button>
+          </apex:variable>
+          <apex:commandButton action="{!openAccountForm}" title="New Account" value="New Account" rendered="true"/>
+          <apex:commandButton action="{!openContactForm}" title="New Contact" value="New Contact" rendered="true"/>
+      </apex:pageBlockButtons>
+
+      <apex:pageBlockSection title="Add account" columns="1" rendered="{! isAccountAddForm }">
+        <apex:inputField value="{! newAccount.Name }"/>
+        <apex:outputPanel>
+          <apex:commandButton action="{!closeAccountForm}" immediate="true" value="Cancel" />
+          <apex:commandButton action="{!saveAccount}" value="Save" />
+        </apex:outputPanel>
+      </apex:pageBlockSection>
+
+      <apex:pageBlockSection title="Add contact" columns="1" rendered="{! isContactAddForm }">
+   		  <apex:inputField value="{! newContact.FirstName }"/>
+        <apex:inputField value="{! newContact.LastName }"/>
+        <apex:outputPanel>
+          <apex:commandButton action="{!closeContactForm}" immediate="true" value="Cancel" />
+          <apex:commandButton action="{!saveContact}" value="Save" />
+        </apex:outputPanel>
+      </apex:pageBlockSection>
 
       <apex:selectList size="1" value="{!accountId}" onchange="selectAccount()">
         <apex:selectOptions value="{!accountSelectOptionList}"/>
       </apex:selectList>
 
-      <apex:pageBlockSection title="Account" id="AccountName">
+      <apex:pageBlockSection title="Account details" id="AccountName">
         <apex:outputField value="{! account.Name }"/>
         <apex:outputField value="{! account.AccountNumber }"/>
         <apex:outputField value="{! account.Type }"/>
