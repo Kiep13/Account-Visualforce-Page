@@ -49,11 +49,18 @@
         <apex:outputField value="{! account.Fax }"/>
         <apex:outputField value="{! account.NumberOfEmployees }"/>
 
-        <apex:pageBlockTable value="{!account.contacts}" var="contact">
+        <apex:pageBlockTable value="{!contacts}" var="contact">
           <apex:column value="{!contact.Name}"/>
           <apex:column value="{!contact.Title}"/>
           <apex:column value="{!contact.Phone}"/>
         </apex:pageBlockTable>
+
+        <br/>
+        <apex:outputPanel>
+          <apex:commandLink action="{!previousContactsPage}" value="<<Previous" rendered="{! hasPrevious }"/>
+          &nbsp;&nbsp;&nbsp;
+          <apex:commandLink action="{!nextContactsPage}" value="Next>>" rendered="{! hasNext }"/>
+        </apex:outputPanel>
       </apex:pageBlockSection>
     </apex:pageBlock>
   </apex:form>

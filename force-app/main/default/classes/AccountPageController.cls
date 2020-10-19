@@ -1,14 +1,34 @@
 public with sharing class AccountPageController {
+    public static Integer PAGE_NUMBER = 10;
+
     public List<Account> accountList {get;set;}
     public List<SelectOption> accountSelectOptionList {get;set;}
     public List<Contact> contactList {get;set;}
     public String accountId {get;set;}
     public Account account {get;set;}
+    public List<Contact> contacts {get;set;}
     public Contact newContact {get; set;}
     public Account newAccount {get; set;}
 
     public Boolean isAccountAddForm {get;set;}
     public Boolean isContactAddForm {get;set;}
+
+    public ApexPages.StandardSetController contactsConroller {get;set;}
+    public Integer pageNumber {get;set;}
+
+    public Boolean hasPrevious {
+        get {
+            return contactsConroller.getHasPrevious();
+        }
+        set;
+    }
+
+    public Boolean hasNext {
+        get {
+            return contactsConroller.getHasNext();
+        }
+        set;
+    }
 
     public AccountPageController() {
 
@@ -35,6 +55,33 @@ public with sharing class AccountPageController {
                           Rating, Fax, NumberOfEmployees,
                           (SELECT Id, Name, Title, Phone, AccountId FROM Contacts) 
                           FROM Account WHERE Id =: accountId LIMIT 1];  
+
+        contactsConroller = new ApexPages.StandardSetController(Database.getQueryLocator(
+            [SELECT Id, Name, Title, Phone, AccountId FROM Contact WHERE AccountId = :account.Id]));
+        contactsConroller.setPageSize(10);
+
+        pageNumber = 1;
+
+        getContactsPage();
+    }
+
+    public void getContactsPage() {
+        contactsConroller.setPageNumber(pageNumber);
+        contacts = contactsConroller.getRecords();
+    }
+
+    public void previousContactsPage() {
+        if(contactsConroller.getHasPrevious()) {
+            pageNumber--;
+            getContactsPage();
+        }
+    }
+
+    public void nextContactsPage() {
+        if(contactsConroller.getHasNext()) {
+            pageNumber++;
+            getContactsPage();
+        }
     }
 
     public void openAccountForm() {
