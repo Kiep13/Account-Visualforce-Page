@@ -1,5 +1,5 @@
-<apex:page showHeader="false" 
-           sidebar="false" controller="AccountPageController">
+<apex:page tabStyle="Account_Page__tab"
+           controller="AccountPageController">
   <apex:slds />
 
   <apex:form>
@@ -8,46 +8,54 @@
                        reRender="AccountName" />
 
       <apex:pageBlockButtons>
-          <apex:variable var="uiTheme" value="classic2010Theme"
-                        rendered="{!$User.UIThemeDisplayed == 'Theme3'}">
-            <button>Back</button>
-          </apex:variable>
           <apex:commandButton action="{!openAccountForm}" title="New Account" value="New Account" rendered="true"/>
           <apex:commandButton action="{!openContactForm}" title="New Contact" value="New Contact" rendered="true"/>
       </apex:pageBlockButtons>
 
-      <apex:pageBlockSection title="Add account" columns="1" rendered="{! isAccountAddForm }">
+      <apex:pageBlockSection title="Add account" id="addAccount" columns="1" rendered="{! isAccountAddForm }">
         <apex:inputField value="{! newAccount.Name }"/>
+        <apex:inputField value="{! newAccount.Type }"/>
+        <apex:inputField value="{! newAccount.SLAExpirationDate__c }"/>
+        <apex:inputField value="{! newAccount.Phone }"/>
+        <apex:inputField value="{! newAccount.Industry }"/>
+        <apex:inputField value="{! newAccount.Fax }"/>
         <apex:outputPanel>
-          <apex:commandButton action="{!closeAccountForm}" immediate="true" value="Cancel" />
+          <apex:commandButton action="{!closeAccountForm}" immediate="true" value="Cancel" style="margin-right: 5px"/>
           <apex:commandButton action="{!saveAccount}" value="Save" />
         </apex:outputPanel>
       </apex:pageBlockSection>
 
-      <apex:pageBlockSection title="Add contact" columns="1" rendered="{! isContactAddForm }">
+      <apex:pageBlockSection title="Add contact" id="addContact" columns="1" rendered="{! isContactAddForm }">
    		  <apex:inputField value="{! newContact.FirstName }"/>
         <apex:inputField value="{! newContact.LastName }"/>
+        <apex:inputField value="{! newContact.Title }"/>
+        <apex:inputField value="{! newContact.Phone }"/>
         <apex:outputPanel>
-          <apex:commandButton action="{!closeContactForm}" immediate="true" value="Cancel" />
+          <apex:commandButton action="{!closeContactForm}" immediate="true" value="Cancel" style="margin-right: 5px"/>
           <apex:commandButton action="{!saveContact}" value="Save" />
         </apex:outputPanel>
       </apex:pageBlockSection>
 
-      <apex:selectList size="1" value="{!accountId}" onchange="selectAccount()">
-        <apex:selectOptions value="{!accountSelectOptionList}"/>
-      </apex:selectList>
+      <apex:pageBlockSection showHeader="false" columns="1">
+        <apex:selectList label="Select account" size="1" value="{!accountId}" onchange="selectAccount()" style="width 300px; height: 25px">
+          <apex:selectOptions value="{!accountSelectOptionList}" />
+        </apex:selectList>
+      </apex:pageBlockSection>
+      
+      <apex:pageBlockSection title="Account details" columns="1" id="AccountName">
 
-      <apex:pageBlockSection title="Account details" id="AccountName">
-        <apex:outputField value="{! account.Name }"/>
-        <apex:outputField value="{! account.AccountNumber }"/>
-        <apex:outputField value="{! account.Type }"/>
-        <apex:outputField value="{! account.SLAExpirationDate__c }"/>
-        <apex:outputField value="{! account.Phone }"/>
-        <apex:outputField value="{! account.Industry }"/>
-        <apex:outputField value="{! account.AnnualRevenue }"/>
-        <apex:outputField value="{! account.Rating }"/>
-        <apex:outputField value="{! account.Fax }"/>
-        <apex:outputField value="{! account.NumberOfEmployees }"/>
+        <apex:pageBlockSection columns="2" showHeader="false">
+          <apex:outputField value="{! account.Name }"/>
+          <apex:outputField value="{! account.AccountNumber }"/>
+          <apex:outputField value="{! account.Type }"/>
+          <apex:outputField value="{! account.SLAExpirationDate__c }"/>
+          <apex:outputField value="{! account.Phone }"/>
+          <apex:outputField value="{! account.Industry }"/>
+          <apex:outputField value="{! account.AnnualRevenue }"/>
+          <apex:outputField value="{! account.Rating }"/>
+          <apex:outputField value="{! account.Fax }"/>
+          <apex:outputField value="{! account.NumberOfEmployees }"/>
+        </apex:pageBlockSection>
 
         <apex:pageBlockTable value="{!contacts}" var="contact">
           <apex:column value="{!contact.Name}"/>
@@ -55,12 +63,12 @@
           <apex:column value="{!contact.Phone}"/>
         </apex:pageBlockTable>
 
-        <br/>
         <apex:outputPanel>
           <apex:commandLink action="{!previousContactsPage}" value="<<Previous" rendered="{! hasPrevious }"/>
           &nbsp;&nbsp;&nbsp;
           <apex:commandLink action="{!nextContactsPage}" value="Next>>" rendered="{! hasNext }"/>
         </apex:outputPanel>
+        
       </apex:pageBlockSection>
     </apex:pageBlock>
   </apex:form>
