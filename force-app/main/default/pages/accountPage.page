@@ -4,8 +4,6 @@
 
   <apex:form>
     <apex:pageBlock >
-      <apex:actionFunction action="{!getAccount}" name="selectAccount"
-                       reRender="AccountName" />
 
       <apex:pageBlockButtons>
           <apex:commandButton action="{!openAccountForm}" title="New Account" value="New Account" rendered="true"/>
@@ -37,9 +35,13 @@
       </apex:pageBlockSection>
 
       <apex:pageBlockSection showHeader="false" columns="1">
-        <apex:selectList label="Select account" size="1" value="{!accountId}" onchange="selectAccount()" style="width 300px; height: 25px">
-          <apex:selectOptions value="{!accountSelectOptionList}" />
-        </apex:selectList>
+        <apex:actionRegion>
+          <h1>Select account</h1>
+          <apex:selectList size="1" value="{!accountId}" style="width 300px; height: 25px">
+            <apex:actionSupport event="onchange" action="{!getAccount}" reRender="AccountName" />
+            <apex:selectOptions value="{!accountSelectOptionList}" />
+          </apex:selectList>
+        </apex:actionRegion>
       </apex:pageBlockSection>
       
       <apex:pageBlockSection title="Account details" columns="1" id="AccountName">
